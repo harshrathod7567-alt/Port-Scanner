@@ -2,15 +2,24 @@ import socket
 
 def scan_port(target, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(0.5)  # wait max 0.5 seconds per port
-    result = sock.connect_ex((target, port))  # returns 0 if port is open
+    sock.settimeout(0.5)
+    result = sock.connect_ex((target, port))
     sock.close()
     return result == 0
 
-target = "127.0.0.1"  # your own computer, safe to scan
-port = 80  # let's test one port first
+def scan_range(target, start_port, end_port):
+    open_ports = []
+    print(f"Scanning {target} from port {start_port} to {end_port}...")
+    
+    for port in range(start_port, end_port + 1):
+        if scan_port(target, port):
+            print(f"Port {port} is OPEN")
+            open_ports.append(port)
+    
+    return open_ports
 
-if scan_port(target, port):
-    print(f"Port {port} is OPEN")
-else:
-    print(f"Port {port} is CLOSED")
+target = "127.0.0.1"
+open_ports = scan_range(target, 1, 1024)  # scan common ports 1-1024
+
+print("\nScan complete.")
+print(f"Open ports: {open_ports}" if open_ports else "No open ports found.")
