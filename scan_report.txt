@@ -1,0 +1,5 @@
+=== Port Scan Report for 127.0.0.1 ===
+
+No open ports found.
+
+Scan completed in 0.04 seconds
